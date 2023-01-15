@@ -1,5 +1,5 @@
-import { type Session } from "@auth/core";
 import { getToken } from "@auth/core/jwt";
+import { Session } from "@auth/core/types";
 import { getSession } from "@solid-auth/next";
 import { Component, Show } from "solid-js";
 import { useRouteData } from "solid-start";
