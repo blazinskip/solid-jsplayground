@@ -12,7 +12,7 @@ import {
   Scripts,
   Title,
 } from "solid-start";
-import { trpc, client, queryClient } from "~/utils/trpc";
+import { api, client, queryClient } from "./utils/api";
 
 export default function Root() {
   return (
@@ -23,7 +23,7 @@ export default function Root() {
         <Meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Body>
-        <trpc.Provider client={client} queryClient={queryClient}>
+        <api.Provider client={client} queryClient={queryClient}>
           <Suspense>
             <ErrorBoundary>
               <Routes>
@@ -31,7 +31,7 @@ export default function Root() {
               </Routes>
             </ErrorBoundary>
           </Suspense>
-        </trpc.Provider>
+        </api.Provider>
         <Scripts />
       </Body>
     </Html>
