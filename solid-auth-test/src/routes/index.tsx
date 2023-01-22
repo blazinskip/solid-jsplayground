@@ -1,15 +1,13 @@
 import { Suspense, type VoidComponent } from "solid-js";
-import { A, Head, Title, Meta, Link } from "solid-start";
-import { trpc } from "../utils/trpc";
+import { Head, Title, Meta, Link } from "solid-start";
 import { signOut, signIn } from "@auth/solid-start/client";
 import { createServerData$ } from "solid-start/server";
 import { getSession } from "@auth/solid-start";
 import { authOpts } from "./api/auth/[...solidauth]";
-import example from "~/server/trpc/router/example";
-import { createContext } from "~/server/trpc/context";
+import { appRouter } from "~/server/api/root";
+import { createContext } from "~/server/api/trpc";
 
 const Home: VoidComponent = () => {
-  const hello = trpc.example.hello.useQuery(() => ({ name: "from tRPC" }));
   return (
     <>
       <Head>
@@ -55,14 +53,14 @@ const AuthShowcase: VoidComponent = () => {
 
 const createSession = () => {
   return createServerData$(async (_, event) => {
-    const result = await example
+    const result = await appRouter
       .createCaller(
         await createContext({
           req: event.request,
           res: { headers: event.request.headers },
         })
       )
-      .hello({ name: "test" });
+      .example.hello({ text: "test" });
 
     const session = await getSession(event.request, authOpts);
     return {
