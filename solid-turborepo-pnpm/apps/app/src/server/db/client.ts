@@ -3,7 +3,7 @@ import { serverEnv } from "~/env/server";
 
 declare global {
   // eslint-disable-next-line no-var
-  var prisma: PrismaClient | undefined;
+  var prisma: PrismaClient;
 }
 
 export const prisma =

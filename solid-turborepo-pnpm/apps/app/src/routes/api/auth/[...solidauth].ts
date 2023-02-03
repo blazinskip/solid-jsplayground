@@ -5,6 +5,9 @@ import { serverEnv } from "~/env/server";
 import { prisma } from "~/server/db/client";
 
 export const authOpts: SolidAuthConfig = {
+  pages: {
+    signIn: "login",
+  },
   callbacks: {
     session({ session, user }) {
       if (session.user) {

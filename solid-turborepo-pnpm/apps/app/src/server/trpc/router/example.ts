@@ -13,4 +13,16 @@ export default router({
   secret: protectedProcedure.query(({ ctx }) => {
     return `This is top secret - ${ctx.session.user.name}`;
   }),
+  addNote: protectedProcedure
+    .input(z.object({ note: z.string() }))
+    .mutation(async ({ input }) => {
+      console.log("call add Note");
+      return prisma.note.create({
+        data: { note: input.note },
+        select: { note: true },
+      });
+    }),
+  notes: protectedProcedure.query(async ({ ctx }) => {
+    return prisma.note.findMany({ select: { note: true } });
+  }),
 });
