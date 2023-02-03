@@ -1,12 +1,13 @@
 import { Suspense, type VoidComponent } from "solid-js";
 import { trpc } from "../utils/trpc";
 import { signOut, signIn } from "@auth/solid-start/client";
-import { createServerData$ } from "solid-start/server";
+import { createServerData$, redirect } from "solid-start/server";
 import { getSession } from "@auth/solid-start";
 import { authOpts } from "./api/auth/[...solidauth]";
 
 const Home: VoidComponent = () => {
   const hello = trpc.example.hello.useQuery(() => ({ name: "from tRPC" }));
+
   return (
     <main class="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#026d56] to-[#152a2c]">
       <div class="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
@@ -46,6 +47,11 @@ const AuthShowcase: VoidComponent = () => {
 
 const createSession = () => {
   return createServerData$(async (_, event) => {
-    return await getSession(event.request, authOpts);
+    const session = await getSession(event.request, authOpts);
+    if (!session) {
+      throw redirect("/login");
+    }
+
+    return session;
   });
 };
